@@ -55,4 +55,4 @@ python demo.py
 ## 联系方式
 xusenthu@qq.com
 ## LICENSE
-MIT
+MIT LICENSE
