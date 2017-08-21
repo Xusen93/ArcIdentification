@@ -7,7 +7,7 @@
 pip install numpy
 pip install matplotlib
 ```
-关于Numpy，请参见[http://www.numpy.org/](http://www.numpy.org/).
+关于Numpy，请参见[http://www.numpy.org/](http://www.numpy.org/).  
 关于Matplotlib，请参见[http://matplotlib.org/](http://matplotlib.org/).
 ### 运行算例
 在项目根目录下打开命令行，运行[demo.py](demo.py).
