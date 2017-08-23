@@ -23,28 +23,28 @@ python demo.py
 ### 峰值识别函数
 识别电流在一个周期内的峰值.
 ```python
-ploc=getAllPeaks(crt, MPH=1, MPD=50)
+ploc = getAllPeaks(crt, MPH=1, MPD=50)
 ```
 识别效果如图[demo/demo_ploc.png](demo/demo_ploc.png)所示：
 [![demo/demo_ploc.png](demo/demo_ploc.png)](demo/demo_ploc.png)
 ### 零点识别函数
 识别峰值点两侧的零点.
 ```python
-zloc=getZeros(crt, ploc, TH=0.1)
+zloc = getZeros(crt, ploc, TH=0.1)
 ```
 识别效果如图[demo/demo_zloc.png](demo/demo_zloc.png)所示：
 [![demo_zloc.png](demo/demo_zloc.png)](demo/demo_zloc.png)
 ### 电弧识别函数
 识别电弧的起点和终点.
 ```python
-arcS,arcE=getArcs(ploc, zloc, MAD=300, MPC=5)
+arcS , arcE = getArcs(ploc, zloc, MAD=300, MPC=5)
 ```
 识别效果如图[demo/demo_arc.png](demo/demo_arc.png)所示：
 [![demo/demo_arc.png](demo/demo_arc.png)](demo/demo_arc.png)
 ### 特征参数函数
 计算电弧的特征参数.
 ```python
-arcP=arcParameters(crt,vol,arcS,arcE,R=33)
+arcP = arcParameters(crt,vol,arcS,arcE,R=33)
 ```
 计算结果如下表所示：
 
