@@ -3,7 +3,7 @@
 ### 运行环境
 算例已在Python3.6中测试通过.
 打开命令行，运行以下命令安装numpy、matplotlib.
-```Shell
+```shell
 pip install numpy
 pip install matplotlib
 ```
