@@ -15,7 +15,7 @@ pip install matplotlib
 python demo.py
 ```
 运行结果如图[demo/demo.png](demo/demo.png)所示:
-[![demo.png](demo/demo.png)](demo/demo.png)
+![demo.png](https://plot.ly/~Xusen93/2.embed)
 本算例中使用的电流数据见[demo/demo_data.csv](demo/demo_data.csv).
 本算例中电弧的特征参数见[demo/demo_arc.csv](demo/demo_arc.csv).
 ## 核心函数
