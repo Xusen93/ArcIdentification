@@ -44,7 +44,7 @@ arcS , arcE = getArcs(ploc, zloc, MAD=300, MPC=5)
 ### 特征参数函数
 计算电弧的特征参数.
 ```python
-arcP = arcParameters(crt,vol,arcS,arcE,R=33)
+arcP = arcParameters(crt, vol, arcS, arcE, R=33)
 ```
 计算结果如下表所示：
 
