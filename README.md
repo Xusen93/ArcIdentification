@@ -10,37 +10,37 @@ pip install matplotlib
 关于Numpy，请参见[http://www.numpy.org/](http://www.numpy.org/).  
 关于Matplotlib，请参见[http://matplotlib.org/](http://matplotlib.org/).
 ### 运行算例
-在项目根目录下打开命令行，运行[demo.py](demo.py).
+在项目根目录下打开命令行，运行[demo_AC.py](demo_AC.py).
 ```shell
-python demo.py
+python demo_AC.py
 ```
-运行结果如图[demo/demo.png](demo/demo.png)所示:
-[![demo.png](demo/demo.png)](demo/demo.png)
-本算例中使用的电流数据见[demo/demo_data.csv](demo/demo_data.csv).
-本算例中电弧的特征参数见[demo/demo_arc.csv](demo/demo_arc.csv).
+运行结果如图[demo/AC/demo.png](demo/AC/demo.png)所示:  
+[![demo/AC/demo.png](demo/AC/demo.png)](demo/AC/demo.png)  
+本算例中使用的电流数据见[demo/AC/demo_data.csv](demo/AC/demo_data.csv).  
+本算例中电弧的特征参数见[demo/AC/demo_arc.csv](demo/AC/demo_arc.csv).
 ## 核心函数
-核心函数代码见[identification.py](identification.py)，包括**峰值识别**、**零点识别**、**电弧识别**、**特征参数**.
+核心函数代码见[identification_AC.py](identification_AC.py)，包括**峰值识别**、**零点识别**、**电弧识别**、**特征参数**.
 ### 峰值识别函数
 识别电流在一个周期内的峰值.
 ```python
 ploc = getAllPeaks(crt, MPH=1, MPD=50)
 ```
-识别效果如图[demo/demo_ploc.png](demo/demo_ploc.png)所示：
-[![demo/demo_ploc.png](demo/demo_ploc.png)](demo/demo_ploc.png)
+识别效果如图[demo/AC/demo_ploc.png](demo/AC/demo_ploc.png)所示：
+[![demo/AC/demo_ploc.png](demo/AC/demo_ploc.png)](demo/AC/demo_ploc.png)
 ### 零点识别函数
 识别峰值点两侧的零点.
 ```python
 zloc = getZeros(crt, ploc, TH=0.1)
 ```
-识别效果如图[demo/demo_zloc.png](demo/demo_zloc.png)所示：
-[![demo_zloc.png](demo/demo_zloc.png)](demo/demo_zloc.png)
+识别效果如图[demo/AC/demo_zloc.png](demo/AC/demo_zloc.png)所示：
+[![demo/AC/demo_zloc.png](demo/AC/demo_zloc.png)](demo/AC/demo_zloc.png)
 ### 电弧识别函数
 识别电弧的起点和终点.
 ```python
 arcS , arcE = getArcs(ploc, zloc, MAD=300, MPC=5)
 ```
-识别效果如图[demo/demo_arc.png](demo/demo_arc.png)所示：
-[![demo/demo_arc.png](demo/demo_arc.png)](demo/demo_arc.png)
+识别效果如图[demo/AC/demo_arc.png](demo/AC/demo_arc.png)所示：
+[![demo/AC/demo_arc.png](demo/AC/demo_arc.png)](demo/AC/demo_arc.png)
 ### 特征参数函数
 计算电弧的特征参数.
 ```python
