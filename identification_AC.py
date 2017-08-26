@@ -3,7 +3,7 @@
 # @Email:  xusenthu@qq.com
 # @Date:   2017-08-03 16:50:39
 # @Last Modified by:   Xusen
-# @Last Modified time: 2017-08-21 14:16:08
+# @Last Modified time: 2017-08-26 15:50:10
 import logging
 import numpy as np
 logging.basicConfig(
@@ -89,7 +89,7 @@ def getZeros(crt, ploc, TH=0.1):
             TH {number} -- zero threshold (default: {0.1})
 
     Returns:
-            array -- index in current array of zero points
+            array -- index of zero points in current array
     '''
     logging.info('Getting zero points ...')
     len_crt = crt.size
@@ -127,7 +127,7 @@ def getArcs(ploc, zloc, MAD=300, MPC=5):
             MPC {number} -- minimum peak count (default: {5})
 
     Returns:
-            array -- index in current array of arc starts and arc ends
+            tuple of arrays -- index in current array of arc starts and arc ends
     '''
     logging.info('Getting arcs ...')
     dloc = np.hstack((0, ploc[1:]-ploc[0:-1]))
