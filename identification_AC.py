@@ -3,7 +3,7 @@
 # @Email:  xusenthu@qq.com
 # @Date:   2017-08-03 16:50:39
 # @Last Modified by:   Xusen
-# @Last Modified time: 2017-08-26 15:50:10
+# @Last Modified time: 2017-08-26 23:33:47
 import logging
 import numpy as np
 logging.basicConfig(
@@ -120,7 +120,7 @@ def getArcs(ploc, zloc, MAD=300, MPC=5):
 
     Arguments:
             ploc {array} -- index in current array of peaks
-            zloc {[type]} -- index in current array of zero points
+            zloc {array} -- index in current array of zero points
 
     Keyword Arguments:
             MAD {number} -- minimum arc distance (default: {300})

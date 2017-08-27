@@ -3,7 +3,7 @@
 # @Email:  xusenthu@qq.com
 # @Date:   2017-08-03 16:50:39
 # @Last Modified by:   Xusen
-# @Last Modified time: 2017-08-26 15:50:15
+# @Last Modified time: 2017-08-27 00:14:39
 import logging
 import numpy as np
 logging.basicConfig(
@@ -29,16 +29,18 @@ def getZeros(crt, TH=0.5):
     return np.nonzero(crt_mod < TH)[0]
 
 
-def getArcs(crt, zloc, MAW=100, MPH=1):
+def getArcs(crt, zloc, MAW=10, MAD=1000, MPH=1):
     '''getArcs
 
     identify arcs
 
     Arguments:
+            crt {array} -- current
             zloc {[type]} -- index in current array of zero points
 
     Keyword Arguments:
-            MAW {number} -- minimum arc width (default: {100})
+            MAW {number} -- minimum arc width (default: {2})
+            MAD {number} -- minimum arc distance (default: {300})
             MPH {number} -- minimum peak height (default: {1})
 
     Returns:
@@ -47,16 +49,28 @@ def getArcs(crt, zloc, MAW=100, MPH=1):
     logging.info('Getting arcs ...')
     fwdiff = np.hstack((0, zloc[1:]-zloc[0:-1]))
     bwdiff = np.hstack((zloc[1:]-zloc[0:-1], 0))
-    s = zloc[np.nonzero(bwdiff > MAW)[0]]
-    e = zloc[np.nonzero(fwdiff > MAW)[0]]
-    def arcfilter(crt, s, e, MPH):
-        crt_abs = np.abs(crt)
-        ploc = crt_abs.tolist().index(np.max(crt_abs))
-        if crt_abs[ploc] > MPH:
-            return s, e, s+ploc
-    filtered = [arcfilter(crt[s:e], s, e, MPH) for s, e in zip(s, e)]
-    s_e_p = np.array([[p[0], p[1], p[2]] for p in filtered if p is not None])
-    return s_e_p[:, 0], s_e_p[:, 1], s_e_p[:, 2]
+    s_MAW = zloc[np.nonzero(bwdiff > MAW)[0]].tolist()
+    e_MAW = zloc[np.nonzero(fwdiff > MAW)[0]].tolist()
+    for i in range(1, len(s_MAW)):
+        if s_MAW[i]-e_MAW[i-1] < MAD:
+            s_MAW[i] = None
+            e_MAW[i-1] = None
+    s_MAD = [i for i in s_MAW if i is not None]
+    e_MAD = [i for i in e_MAW if i is not None]
+    ploc = []
+    for i in range(0, len(s_MAD)):
+        crt_abs = np.abs(crt[s_MAD[i]:e_MAD[i]])
+        temp = crt_abs.tolist().index(np.max(crt_abs))
+        if crt_abs[temp] < MPH:
+            s_MAD[i] = None
+            e_MAD[i] = None
+            ploc.append(None)
+        else:
+            ploc.append(s_MAD[i]+temp)
+    arcS = [i for i in s_MAD if i is not None]
+    arcE = [i for i in e_MAD if i is not None]
+    ploc = [i for i in ploc if i is not None]
+    return np.array(arcS), np.array(arcE), np.array(ploc)
 
 
 def arcParameters(crt, vol, arcS, arcE, R=33):

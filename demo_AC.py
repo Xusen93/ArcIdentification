@@ -2,19 +2,19 @@
 # @Author: Xusen
 # @Date:   2017-08-20 21:03:30
 # @Last Modified by:   Xusen
-# @Last Modified time: 2017-08-21 15:46:44
-from identification import *
+# @Last Modified time: 2017-08-26 22:00:47
+from identification_AC import *
 import matplotlib.pyplot as plt
 import csv
 
 
-def csvread(addr='demo/demo_data.csv'):
+def csvread(addr='demo/AC/demo_data.csv'):
     '''csvread
 
     load leakage current data from .csv files
 
     Keyword Arguments:
-            addr {str} -- address of .csvfiles (default: {'demo/demo_data.csv'})
+            addr {str} -- address of .csvfiles (default: {'demo/AC/demo_data.csv'})
 
     Returns:
             array -- including 3 columns, that is, time, voltage and current
@@ -29,7 +29,7 @@ def csvwrite(data, filename):
     with open(filename, 'w', newline='') as f:
         logging.info("Saving arc parameters to %s" % filename)
         writer = csv.writer(f)
-        writer.writerows(np.around(data,3))
+        writer.writerows(np.around(data, 3))
 
 
 def imgplot(time, crt, **kw):
@@ -64,5 +64,5 @@ if __name__ == '__main__':
     zloc = getZeros(crt, ploc)
     arcS, arcE = getArcs(ploc, zloc)
     imgplot(time, crt, ploc=ploc, zloc=zloc, arcS=arcS,
-            arcE=arcE, fname='demo/demo.png')
-    csvwrite(arcParameters(crt,vol,arcS,arcE,R=33),'demo/demo_arc.csv')
+            arcE=arcE, fname='demo/AC/demo.png')
+    csvwrite(arcParameters(crt, vol, arcS, arcE, R=33), 'demo/AC/demo_arc.csv')
