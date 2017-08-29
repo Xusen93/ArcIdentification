@@ -1,15 +1,6 @@
-# 用于交流斜面法试验的电弧辨识程序
-## 算例演示
-### 运行环境
-算例已在Python3.6中测试通过.
-打开命令行，运行以下命令安装numpy、matplotlib.
-```shell
-pip install numpy
-pip install matplotlib
-```
-关于Numpy，请参见[http://www.numpy.org/](http://www.numpy.org/).  
-关于Matplotlib，请参见[http://matplotlib.org/](http://matplotlib.org/).
-### 运行算例
+# 用于斜面法试验的电弧辨识程序
+## 交流电弧
+### 算例演示
 在项目根目录下打开命令行，运行[demo_AC.py](demo_AC.py).
 ```shell
 python demo_AC.py
@@ -17,36 +8,94 @@ python demo_AC.py
 运行结果如图[demo/AC/demo.png](demo/AC/demo.png)所示:  
 [![demo/AC/demo.png](demo/AC/demo.png)](demo/AC/demo.png)  
 本算例中使用的电流数据见[demo/AC/demo_data.csv](demo/AC/demo_data.csv).  
-本算例中电弧的特征参数见[demo/AC/demo_arc.csv](demo/AC/demo_arc.csv).
-## 核心函数
-核心函数代码见[identification_AC.py](identification_AC.py)，包括**峰值识别**、**零点识别**、**电弧识别**、**特征参数**.
-### 峰值识别函数
+### 核心函数
+用于交流电弧辨识的核心函数代码见[identification_AC.py](identification_AC.py)，电弧辨识步骤如下:  
+**峰值识别**&rarr;**零点识别**&rarr;**电弧识别**
+#### 峰值识别函数
 识别电流在一个周期内的峰值.
 ```python
 ploc = getAllPeaks(crt, MPH=1, MPD=50)
 ```
 识别效果如图[demo/AC/demo_ploc.png](demo/AC/demo_ploc.png)所示：
 [![demo/AC/demo_ploc.png](demo/AC/demo_ploc.png)](demo/AC/demo_ploc.png)
-### 零点识别函数
+#### 零点识别函数
 识别峰值点两侧的零点.
 ```python
 zloc = getZeros(crt, ploc, TH=0.1)
 ```
 识别效果如图[demo/AC/demo_zloc.png](demo/AC/demo_zloc.png)所示：
 [![demo/AC/demo_zloc.png](demo/AC/demo_zloc.png)](demo/AC/demo_zloc.png)
-### 电弧识别函数
+#### 电弧识别函数
 识别电弧的起点和终点.
 ```python
 arcS , arcE = getArcs(ploc, zloc, MAD=300, MPC=5)
 ```
 识别效果如图[demo/AC/demo_arc.png](demo/AC/demo_arc.png)所示：
 [![demo/AC/demo_arc.png](demo/AC/demo_arc.png)](demo/AC/demo_arc.png)
+#### 阈值设置
+| 代号 |    定义    | 参考值 |
+|------|------------|:-----:|
+| MPH  | 最小峰高度 |      1 |
+| MPD  | 最小峰间距 |     50 |
+| TH   | 零点阈值   |    0.1 |
+| MAD  | 最小弧间距 |    300 |
+| MPC  | 最小峰数量 |      5 |
+
+### 算法详情
+[徐森,等.交流斜面法试验中的泄漏电流分析与电弧辨识.]()对电弧辨识算法做了详细的介绍.
+## 直流电弧
+### 算例演示
+在项目根目录下打开命令行，运行[demo_DC.py](demo_DC.py).
+```shell
+python demo_DC.py
+```
+运行结果如图[demo/DC/demo.png](demo/DC/demo.png)所示:  
+[![demo/DC/demo.png](demo/DC/demo.png)](demo/DC/demo.png)  
+本算例中使用的电流数据见[demo/DC/demo_data.csv](demo/DC/demo_data.csv).  
+### 核心函数
+用于直流电弧辨识的核心函数代码见[identification_DC.py](identification_DC.py)，电弧辨识步骤如下:  
+**零点识别**&rarr;**电弧识别**  
+相较而言，直流电弧辨识难度略低于交流电弧.
+#### 零点识别函数
+识别电弧的零点.
+```python
+zloc = getZeros(crt, TH=0.5)
+```
+识别效果如图[demo/DC/demo_zloc.png](demo/DC/demo_zloc.png)所示：
+[![demo/DC/demo_zloc.png](demo/DC/demo_zloc.png)](demo/DC/demo_zloc.png)
+#### 电弧识别函数
+识别电弧的起点和终点，确定电弧电流最大值.
+```python
+arcS , arcE, ploc = getArcs(crt, zloc, MAW=10, MAD=1000, MPH=1)
+```
+识别效果如图[demo/DC/demo_arc.png](demo/DC/demo_arc.png)所示：
+[![demo/DC/demo_arc.png](demo/DC/demo_arc.png)](demo/DC/demo_arc.png)
+#### 阈值设置
+| 代号   | 定义         | 参考值   |
+| ------ | ------------ |:-------:|
+| TH     | 零点阈值     | 0.5      |
+| MAW    | 最小弧宽度   | 10       |
+| MAD    | 最小弧间距   | 1000     |
+| MPH    | 最小峰高度   | 1        |
+
+## 电弧特征参数
+### 特征参数定义
+|特征参数|代号|计算公式|
+|:-----:|:--:|:------|
+|燃弧时间|**Ta**|$Ta=t_{e_{i}}-t_{s_{i}}$|
+|熄弧时间|**To**|$To=t_{s_{i+1}}-t_{e_{i}}$|
+|最大峰值电流|**Im**|$Im=\max \limits_{{t_{s_{i}}}\le t \le{t_{e_{i}}}}i(t)$|
+|电流有效值|**Ie**|$Ie=\sqrt{\frac{1}{Ta}\int_{t_{s_{i}}}^{t_{e_{i}}}{{i(t)^{2}}\,dt}}$|
+|燃弧能量|**E**|$E=\int_{t_{s_{i}}}^{t_{e_{i}}}i(t)(u(t)-i(t)R)\,dt$|
+|平均功率|**P**|$P=E/(Ta+To)$|
+
+其中，$t_{e_{i}},t_{s_{i}}$分别为燃弧时刻、熄弧时刻，$i(t),u(t)$分别为电流、电压，$R$为限流电阻
 ### 特征参数函数
-计算电弧的特征参数.
+计算电弧特征参数的函数代码见[arcParameters.py](arcParameters.py).
 ```python
 arcP = arcParameters(crt, vol, arcS, arcE, R=33)
 ```
-计算结果如下表所示：
+图[demo/AC/demo.png](demo/AC/demo.png)中交流电弧的特征参数为:
 
 | Ta(s) | To(s) | Im(mA) | Ie(mA) |  E(J)  |  P(W)  |
 |-------|-------|--------|--------|--------|--------|
@@ -54,9 +103,23 @@ arcP = arcParameters(crt, vol, arcS, arcE, R=33)
 | 0.945 | 0.848 | 29.014 | 12.915 | 45.091 | 25.157 |
 | 0.713 | 0.144 | 24.788 | 13.541 | 36.242 | 42.299 |
 
-## 算法详情
-[徐森,等.交流斜面法试验中的泄漏电流分析与电弧辨识.]()对电弧辨识算法做了详细的介绍.
+图[demo/DC/demo.png](demo/DC/demo.png)中直流电弧的特征参数为:
+
+| Ta(s) | To(s) | Im(mA) | Ie(mA) |   E(J)  |  P(W)  |
+|-------|-------|--------|--------|---------|--------|
+| 5.112 | 5.372 | 21.291 | 12.492 | 242.613 | 23.143 |
+| 5.634 | 6.346 | 22.700 | 14.511 | 298.930 | 24.953 |
+
+## 运行环境
+程序已在Python3.6中测试通过.程序运行依赖第三方软件包：numpy、matplotlib.  
+在命令行中输入以下命令进行安装:
+```shell
+pip install numpy
+pip install matplotlib
+```
+关于Numpy，请参见[http://www.numpy.org/](http://www.numpy.org/).  
+关于Matplotlib，请参见[http://matplotlib.org/](http://matplotlib.org/).
 ## 联系方式
-xusenthu@qq.com
+Emali: xusenthu@qq.com
 ## LICENSE
 MIT LICENSE

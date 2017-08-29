@@ -2,8 +2,9 @@
 # @Author: Xusen
 # @Date:   2017-08-20 21:03:30
 # @Last Modified by:   Xusen
-# @Last Modified time: 2017-08-27 14:06:53
+# @Last Modified time: 2017-08-29 19:18:34
 from identification_DC import *
+from arcParameters import arcParameters
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import csv

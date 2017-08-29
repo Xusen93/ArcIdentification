@@ -2,8 +2,9 @@
 # @Author: Xusen
 # @Date:   2017-08-20 21:03:30
 # @Last Modified by:   Xusen
-# @Last Modified time: 2017-08-26 22:00:47
+# @Last Modified time: 2017-08-29 19:16:44
 from identification_AC import *
+from arcParameters import arcParameters
 import matplotlib.pyplot as plt
 import csv
 
